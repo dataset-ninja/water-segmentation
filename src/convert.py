@@ -3,7 +3,7 @@ import os
 from dataset_tools.convert import unpack_if_archive
 import src.settings as s
 from urllib.parse import unquote, urlparse
-from supervisely.io.fs import get_file_name, get_file_size
+from supervisely.io.fs import get_file_name, file_exists
 import shutil
 
 from tqdm import tqdm
@@ -70,16 +70,87 @@ def convert_and_upload_supervisely_project(
     api: sly.Api, workspace_id: int, project_name: str
 ) -> sly.ProjectInfo:
     ### Function should read local dataset and upload it to Supervisely project, then return project info.###
-    raise NotImplementedError("The converter should be implemented manually.")
+    images_path = os.path.join("water_v2","water_v2","JPEGImages")
+    masks_path = os.path.join("water_v2","water_v2","Annotations")
+    train_split_path = os.path.join("water_v2","water_v2","train.txt")
+    val_split_path = os.path.join("water_v2","water_v2","val.txt")
+    masks_ext = ".png"
 
-    # dataset_path = "/local/path/to/your/dataset" # general way
-    # dataset_path = download_dataset(teamfiles_dir) # for large datasets stored on instance
+    batch_size = 30
 
-    # ... some code here ...
 
-    # sly.logger.info('Deleting temporary app storage files...')
-    # shutil.rmtree(storage_dir)
+    def create_ann(image_path):
+        labels = []
 
-    # return project
+        image_name = get_file_name(image_path)
+        image_np = sly.imaging.image.read(image_path)[:, :, 0]
+        img_height = image_np.shape[0]
+        img_wight = image_np.shape[1]
 
+        mask_path = os.path.join(masks_path, folder, image_name + masks_ext)
+        if file_exists(mask_path):
+            mask_np = sly.imaging.image.read(mask_path)[:, :, 0]
+            mask = mask_np == 255
+            curr_bitmap = sly.Bitmap(mask)
+            curr_label = sly.Label(curr_bitmap, obj_class)
+            labels.append(curr_label)
+
+        tag = sly.Tag(meta=tag_seq,value=folder)
+
+        return sly.Annotation(img_size=(img_height, img_wight), labels=labels, img_tags=[tag])
+
+    tag_seq = sly.TagMeta(name="seq", value_type=sly.TagValueType.ANY_STRING)
+    obj_class = sly.ObjClass("water", sly.Bitmap)
+
+    project = api.project.create(workspace_id, project_name, change_name_if_conflict=True)
+    meta = sly.ProjectMeta(obj_classes=[obj_class],tag_metas=[tag_seq])
+
+
+    train_folders = []
+    with open(train_split_path) as f:
+        content = f.read().split("\n")
+        for curr_data in content:
+            if len(curr_data) > 0:
+                train_folders.append(curr_data)
+                tag_meta = sly.TagMeta(curr_data, sly.TagValueType.NONE)
+                meta = meta.add_tag_meta(tag_meta)
+
+    val_folders = []
+    with open(val_split_path) as f:
+        content = f.read().split("\n")
+        for curr_data in content:
+            if len(curr_data) > 0:
+                val_folders.append(curr_data)
+                tag_meta = sly.TagMeta(curr_data, sly.TagValueType.NONE)
+                meta = meta.add_tag_meta(tag_meta)
+
+
+    api.project.update_meta(project.id, meta.to_json())
+
+    ds_name_to_folders = {"train": train_folders, "val": val_folders}
+
+    for ds_name, folders in ds_name_to_folders.items():
+        dataset = api.dataset.create(project.id, ds_name, change_name_if_conflict=True)
+
+        for folder in folders:
+            curr_images_path = os.path.join(images_path, folder)
+            images_names = os.listdir(curr_images_path)
+            progress = sly.Progress(
+                "Create dataset {}, add {} data".format(ds_name, folder), len(images_names)
+            )
+
+            for img_names_batch in sly.batched(images_names, batch_size=batch_size):
+                images_pathes_batch = [
+                    os.path.join(curr_images_path, image_name) for image_name in img_names_batch
+                ]
+
+                new_images_names = [folder.split("_")[0] + "_" + im_name for im_name in img_names_batch]
+
+                img_infos = api.image.upload_paths(dataset.id, new_images_names, images_pathes_batch)
+                img_ids = [im_info.id for im_info in img_infos]
+
+                anns_batch = [create_ann(image_path) for image_path in images_pathes_batch]
+                api.annotation.upload_anns(img_ids, anns_batch)
+
+                progress.iters_done_report(len(img_names_batch))
 
