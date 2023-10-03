@@ -1,4 +1,5 @@
 import supervisely as sly
+import numpy as np
 import os
 from dataset_tools.convert import unpack_if_archive
 import src.settings as s
@@ -90,10 +91,12 @@ def convert_and_upload_supervisely_project(
         mask_path = os.path.join(masks_path, folder, image_name + masks_ext)
         if file_exists(mask_path):
             mask_np = sly.imaging.image.read(mask_path)[:, :, 0]
-            mask = mask_np == 255
-            curr_bitmap = sly.Bitmap(mask)
-            curr_label = sly.Label(curr_bitmap, obj_class)
-            labels.append(curr_label)
+            uniq = np.unique(mask_np)
+            if len(uniq)>1:
+                mask = mask_np == 255
+                curr_bitmap = sly.Bitmap(mask)
+                curr_label = sly.Label(curr_bitmap, obj_class)
+                labels.append(curr_label)
 
         tag = sly.Tag(meta=tag_seq,value=folder)
 
@@ -154,3 +157,4 @@ def convert_and_upload_supervisely_project(
 
                 progress.iters_done_report(len(img_names_batch))
 
+    return project
