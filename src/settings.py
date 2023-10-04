@@ -13,8 +13,8 @@ from dataset_tools.templates import (
 ##################################
 # * Before uploading to instance #
 ##################################
-PROJECT_NAME: str = "Water Segmentation"
-PROJECT_NAME_FULL: str = "Water Segmentation"
+PROJECT_NAME: str = "WaterDataset"
+PROJECT_NAME_FULL: str = "WaterDataset v2"
 HIDE_DATASET = True  # set False when 100% sure about repo quality
 
 ##################################
@@ -22,7 +22,7 @@ HIDE_DATASET = True  # set False when 100% sure about repo quality
 ##################################
 LICENSE: License = License.CC_BY_4_0()
 APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Entertainment(is_used=False)]
-CATEGORY: Category = Category.Entertainment()
+CATEGORY: Category = Category.Entertainment(is_original_dataset=False)
 
 CV_TASKS: List[CVTask] = [CVTask.SemanticSegmentation()]
 ANNOTATION_TYPES: List[AnnotationType] = [AnnotationType.SemanticSegmentation()]
@@ -53,7 +53,7 @@ CLASS2COLOR: Optional[Dict[str, List[str]]] = None
 # Use dict key to specify name for a button
 PAPER: Optional[Union[str, List[str], Dict[str, str]]] = ["https://link.springer.com/article/10.1007/s41095-020-0156-x"]
 BLOGPOST: Optional[Union[str, List[str], Dict[str, str]]] = None
-REPOSITORY: Optional[Union[str, List[str], Dict[str, str]]] = None
+REPOSITORY: Optional[Union[str, List[str], Dict[str, str]]] = ["https://github.com/xmlyqing00/WaterNet"]
 
 CITATION_URL: Optional[str] = "https://link.springer.com/article/10.1007/s41095-020-0156-x"
 AUTHORS: Optional[List[str]] = ["Yongqing Liang", "Navid Jafari", "Xing Luo", "Qin Chen", "Yanpeng Cao", "Xin Li"]
