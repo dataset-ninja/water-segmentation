@@ -1,3 +1,3 @@
-# Water Segmentation
+# WaterDataset v2
 
-Water Segmentation is a dataset for semantic segmentation task.
+WaterDataset is a dataset for semantic segmentation task.
