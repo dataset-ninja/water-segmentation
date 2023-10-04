@@ -77,6 +77,17 @@ def convert_and_upload_supervisely_project(
     val_split_path = os.path.join("water_v2","water_v2","val.txt")
     masks_ext = ".png"
 
+    blank_masks = [
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00002842.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00003321.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00004994.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00009491.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00009944.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00011570.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00014491.png",
+        "water_v2\water_v2\Annotations\ADE20K\ADE_train_00019048.png",
+    ]
+
     batch_size = 30
 
 
