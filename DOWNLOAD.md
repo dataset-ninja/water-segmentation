@@ -1,6 +1,6 @@
 Dataset **WaterDataset** can be downloaded in [Supervisely format](https://developer.supervisely.com/api-references/supervisely-annotation-json-format):
 
- [Download](https://assets.supervisely.com/supervisely-supervisely-assets-public/teams_storage/7/H/aU/IxWKf9CrsF3sd58dqtiRJRKzfdewZQm6wSsdkKvt5wV5qMWY6bXEv1TloUVFb3tvGgGrWGwkfzFvzM5BzUiih4i1Ys51bQGQbathuNVehiCAOomF3WYwqrcFV7MP.tar)
+ [Download](https://assets.supervisely.com/supervisely-supervisely-assets-public/teams_storage/C/c/G3/6gY5OSSPYa6WKg6CPSfwiScBSZG1Uudhz48PRDafjAYk0H6zEtZb2QUMB14bek05mb7HD9EKMbmRZfkN3sDhQAoBAyQep2GUDKuhDdWhsy7kShWzkOqPX2FJjFzj.tar)
 
 As an alternative, it can be downloaded with *dataset-tools* package:
 ``` bash
