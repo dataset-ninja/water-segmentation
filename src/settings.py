@@ -20,7 +20,7 @@ HIDE_DATASET = False  # set False when 100% sure about repo quality
 ##################################
 # * After uploading to instance ##
 ##################################
-LICENSE: License = License.CC_BY_4_0()
+LICENSE: License = License.CC_BY_4_0(source_url="https://link.springer.com/article/10.1007/s41095-020-0156-x#rightslink")
 APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Entertainment(is_used=False)]
 CATEGORY: Category = Category.Entertainment(is_original_dataset=False)
 
