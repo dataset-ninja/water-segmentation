@@ -21,8 +21,8 @@ HIDE_DATASET = False  # set False when 100% sure about repo quality
 # * After uploading to instance ##
 ##################################
 LICENSE: License = License.CC_BY_4_0(source_url="https://link.springer.com/article/10.1007/s41095-020-0156-x#rightslink")
-APPLICATIONS: List[Union[Industry, Domain, Research]] = [Industry.Entertainment(is_used=False)]
-CATEGORY: Category = Category.Entertainment(is_original_dataset=False)
+APPLICATIONS: List[Union[Industry, Domain, Research]] = [Domain.General()]
+CATEGORY: Category = Category.General(is_original_dataset=True)
 
 CV_TASKS: List[CVTask] = [CVTask.SemanticSegmentation()]
 ANNOTATION_TYPES: List[AnnotationType] = [AnnotationType.SemanticSegmentation()]
@@ -57,6 +57,7 @@ REPOSITORY: Optional[Union[str, List[str], Dict[str, str]]] = {"GitHub": "https:
 
 CITATION_URL: Optional[str] = "https://link.springer.com/article/10.1007/s41095-020-0156-x"
 AUTHORS: Optional[List[str]] = ["Yongqing Liang", "Navid Jafari", "Xing Luo", "Qin Chen", "Yanpeng Cao", "Xin Li"]
+AUTHORS_CONTACTS: Optional[List[str]] = ["xinli@cct.lsu.edu"]
 
 ORGANIZATION_NAME: Optional[Union[str, List[str]]] = ["Louisiana State University", "Zhejiang University", "Northeastern University"]
 ORGANIZATION_URL: Optional[Union[str, List[str]]] = ["https://www.lsu.edu/", "https://www.zju.edu.cn/english/", "https://www.northeastern.edu/"]
@@ -110,6 +111,7 @@ def get_settings():
     settings["repository"] = REPOSITORY
     settings["citation_url"] = CITATION_URL
     settings["authors"] = AUTHORS
+    settings["authors_contacts"] = AUTHORS_CONTACTS
     settings["organization_name"] = ORGANIZATION_NAME
     settings["organization_url"] = ORGANIZATION_URL
     settings["slytagsplit"] = SLYTAGSPLIT
