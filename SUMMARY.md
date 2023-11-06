@@ -1,4 +1,4 @@
-**WaterDataset v2** is a dataset for a semantic segmentation task. Possible applications of the dataset could be in the entertainment industry. The dataset presented here is not the original one. Learn more on the dataset's homepage.
+**WaterDataset v2** is a dataset for a semantic segmentation task. It is applicable or relevant across various domains. 
 
 The dataset consists of 4413 images with 2392 labeled objects belonging to 1 single class (*water*).
 
